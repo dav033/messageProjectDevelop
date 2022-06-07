@@ -1,0 +1,63 @@
+.Navbar {
+  background-color: #393e46;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  /* border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px; */
+  border-radius: 5px;
+  user-select: none;
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.Navbar a {
+  float: left;
+  display: block;
+  color: #00adb5;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 30px;
+}
+
+.Navbar .loggedOptions a {
+  font-size: 21px;
+  float: right;
+  color: #eeeeee;
+}
+
+.Navbar .loggedOptions button:hover {
+  cursor: pointer;
+  color: #00adb5!important;
+}
+
+.Navbar .loggedOptions button {
+  background-color: transparent;
+  border: none;
+  font-size: 21px;
+  margin-right: 10px;
+  color: white;
+}
+.Navbar .loggedOptions a:hover {
+  cursor: pointer;
+  color: #00adb5;
+}
+
+.Navbar .loggedOptions {
+  display: flex;
+  height: 68.8px;
+  align-items: center;
+  /* justify-content: space-between; */
+  justify-content: center;
+}
+
+/* .Navbar a:hover {
+  background-color: #da0037;
+  color: black;
+
+  transition-property: background-color;
+  transition-duration: 0.3s;
+} */

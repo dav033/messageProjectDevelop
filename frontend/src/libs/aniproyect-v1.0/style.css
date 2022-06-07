@@ -1,0 +1,121 @@
+@font-face {
+  font-family: 'aniproyect';
+  src:
+    url('fonts/aniproyect.ttf?sg7i93') format('truetype'),
+    url('fonts/aniproyect.woff?sg7i93') format('woff'),
+    url('fonts/aniproyect.svg?sg7i93#aniproyect') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'aniproyect' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-signOut:before {
+  content: "\e91b";
+}
+.icon-mensaje:before {
+  content: "\e91a";
+}
+.icon-mediaEstrella:before {
+  content: "\e917";
+}
+.icon-estrellaVacia:before {
+  content: "\e918";
+}
+.icon-estrella:before {
+  content: "\e919";
+}
+.icon-loading:before {
+  content: "\e916";
+}
+.icon-check:before {
+  content: "\e915";
+}
+.icon-rechazar:before {
+  content: "\e90a";
+}
+.icon-solicitudes:before {
+  content: "\e914";
+}
+.icon-solicitud:before {
+  content: "\e913";
+}
+.icon-amigos:before {
+  content: "\e912";
+}
+.icon-notificacion:before {
+  content: "\e911";
+}
+.icon-info:before {
+  content: "\e910";
+}
+.icon-eliminar:before {
+  content: "\e90e";
+}
+.icon-agregar:before {
+  content: "\e90f";
+}
+.icon-plus:before {
+  content: "\e90c";
+}
+.icon-salir2:before {
+  content: "\e90d";
+}
+.icon-camara:before {
+  content: "\e90b";
+  color: #fff;
+}
+.icon-salir:before {
+  content: "\e909";
+  color: #fff;
+}
+.icon-perfil:before {
+  content: "\e908";
+  color: #fff;
+}
+.icon-cuenta:before {
+  content: "\e906";
+  color: #fff;
+}
+.icon-ajustes:before {
+  content: "\e907";
+  color: #fff;
+}
+.icon-buscar:before {
+  content: "\e900";
+  color: #fff;
+}
+.icon-descubrir:before {
+  content: "\e901";
+  color: #fff;
+}
+.icon-editar:before {
+  content: "\e902";
+  color: #fff;
+}
+.icon-ingresar:before {
+  content: "\e903";
+  color: #fff;
+}
+.icon-inicio:before {
+  content: "\e904";
+  color: #fff;
+}
+.icon-registrarse:before {
+  content: "\e905";
+  color: #fff;
+}

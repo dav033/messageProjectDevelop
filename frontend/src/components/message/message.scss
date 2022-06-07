@@ -1,0 +1,109 @@
+.mensaje {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  justify-content: flex-start;
+  min-height: 50px;
+}
+
+.mensaje.left .avatar {
+  display: none;
+}
+
+.mensaje.left {
+  justify-content: flex-end;
+}
+
+.mensaje img {
+  margin-bottom: 0.5rem;
+}
+
+.mensaje .cuerpo {
+  font-size: 0.85em;
+  padding: 10px;
+  background-color: #393e46;
+  border-radius: 8px;
+  position: relative;
+  min-width: 100px;
+  max-width: 1000px;
+}
+
+.mensaje.left .cuerpo {
+  background-color: #00adb5;
+}
+
+.mensaje .cuerpo::before {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-width: 9px;
+  border-color: transparent #393e46 transparent transparent;
+  border-style: solid;
+  left: -18px;
+  top: 7px;
+}
+
+.mensaje.left .cuerpo::before {
+  border-color: transparent transparent transparent #00adb5;
+  left: initial;
+  right: -18px;
+}
+
+.mensaje .texto {
+  position: relative;
+  color: aliceblue;
+  left: 0;
+  //padding: 1px;
+  word-wrap: break-word !important;
+  padding-right: 0;
+  margin-bottom: 0px;
+}
+
+.mensaje .cuerpo .tiempo {
+  position: absolute;
+  display: inline;
+  color: white;
+  right: 0.5rem;
+  float: right;
+  bottom: 0;
+  margin-top: 0px;
+  opacity: 0.8;
+}
+
+.mensaje.left .tiempo {
+  text-align: right;
+}
+
+.mensaje .opciones-msj {
+  position: absolute;
+  right: -35px;
+  top: 0;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.mensaje.left .opciones-msj {
+  right: initial;
+  left: -35px;
+}
+
+.mensaje:hover .opciones-msj {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mensaje .opciones-msj button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 0;
+  background-color: #f1f1f1;
+  margin-bottom: 0.2rem;
+  cursor: pointer;
+  color: #757575;
+}

@@ -1,0 +1,98 @@
+.Home .Group1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  height: 100px;
+  width: 450px;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+.Home {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.buttonTrans {
+  border-radius: 5px;
+  background-color: #00adb5;
+  font-family: "Noto Sans";
+  text-decoration: none;
+  width: 190px;
+  height: 50px;
+  border-radius: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  transform: translate(0, 0);
+}
+
+#iniciar::before {
+  font-family: "Noto Sans";
+  content: "Inicia sesion";
+}
+
+#chatear::before {
+  font-family: "Noto Sans";
+  content: "Empieza a chatear";
+}
+
+.buttonTrans h4::before {
+  color: white;
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.5s ease-in-out;
+  width: 100%;
+  text-align: center;
+}
+
+.buttonTrans:hover > h4::before {
+  top: -30px;
+}
+
+h4::after {
+  font-size: 30px;
+  position: absolute;
+  top: 150%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.5s ease-in-out;
+  color: white;
+}
+
+#iniciar::after {
+  font-family: "aniproyect";
+  content: "\e90d";
+}
+
+#chatear::after {
+  font-family: "aniproyect";
+  content: "\e91a";
+}
+
+.buttonTrans:hover > h4::after {
+  top: 50%;
+}
+
+.Home b {
+  color: #d1d1d1;
+  font-size: 25px;
+  margin: 15px;
+  user-select: none;
+}
+
+.Home a {
+  user-select: none;
+}

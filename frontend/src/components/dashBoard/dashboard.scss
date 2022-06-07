@@ -1,0 +1,168 @@
+.sidebar {
+  flex: 1;
+  height: calc(100vh - 68.8px);
+  background-color: #393e46;
+  position: sticky;
+  top: 50px;
+  min-width: 320px;
+  max-width: 320px;
+  border-top: solid 1px black;
+  padding: 0;
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.component {
+  margin: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 1px gray;
+  border-top: solid 1px gray;
+  text-align: left;
+  flex-direction: row;
+  padding-right: 5px;
+  padding-left: 5px;
+
+  &:hover {
+    background-color: darken($color: #393e46, $amount: 5%);
+    cursor: pointer;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+    color: white;
+
+    display: inline;
+  }
+
+  #usersInGroup {
+    font-size: 1.2rem;
+
+    color: white;
+    display: inline;
+  }
+
+  .flexItem {
+    width: 17.7% !important;
+    margin: auto !important;
+      display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-overflow: clip !important;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  #titulo {
+    width: 66.6% !important;
+    margin: auto !important;
+    display: flex;
+    text-overflow: clip !important;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.sidebarWrapper {
+  padding: 20px;
+  color: #555;
+}
+
+.sidebarMenu {
+  margin-bottom: 10px;
+}
+
+:selection {
+  color: #fff;
+  background: #2980b9;
+}
+.search-box {
+  position: relative;
+  height: 60px;
+  width: 100%;
+  border-radius: 50%;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.search-box.active {
+  width: 250px;
+}
+.search-box input {
+  width: 100%;
+  height: 70%;
+  border: none;
+  border-radius: 50px;
+  background: #fff;
+  outline: none;
+  padding: 0 60px 0 20px;
+  font-size: 18px;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  opacity: 1;
+}
+.search-box input.active {
+  opacity: 1;
+}
+.search-box input::placeholder {
+  color: #a6a6a6;
+}
+.search-box .search-icon {
+  position: absolute;
+  top: 35%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  text-align: center;
+  color: #2980b9;
+  cursor: pointer;
+  z-index: 1;
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  right: 5px;
+  height: 35px;
+  line-height: 35px;
+  width: 35px;
+  font-size: 20px;
+  background: #00adb5;
+  color: #fff;
+}
+.search-box .search-icon.active {
+  right: 5px;
+  height: 50px;
+  line-height: 50px;
+  width: 50px;
+  font-size: 20px;
+  background: #2980b9;
+  color: #fff;
+  transform: translateY(-50%) rotate(360deg);
+}
+
+.election {
+  .electionButtons {
+    margin: auto;
+    width: 100%;
+    background-color: #eeeeee;
+    color: black;
+    border: none;
+    height: 100%;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #00adb5;
+      cursor: pointer;
+      color: #eeeeee;
+    }
+  }
+
+  .active {
+    color: white !important;
+    background-color: #00adb5;
+  }
+}
