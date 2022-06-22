@@ -5,21 +5,23 @@ import { basePath } from "../helpers";
 import { verifyToken, getUserById, loginP } from "../petitions";
 import { useQuery, useQueryClient, QueryCache } from "react-query";
 import { useMutatePost } from "../hooks/post";
+import { useTimeout } from "usehooks-ts";
 
 export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const queryCache = new QueryCache();
   const queryClient = useQueryClient();
+  const [chatAux, setChatAux] = useState();
   const [token, setToken] = useState(() => {
     const token = localStorage.getItem("token");
     const initialValueToken = token ? token : "";
     return initialValueToken;
   });
+
   const [userIsLoading, setUserIsLoading] = useState(false);
   const getUser = async () => {
     const token = localStorage.getItem("token");
-    console.log(`Bearer ${token}`);
     const response = await axios.post(
       "/api/users/token",
       {},
@@ -31,33 +33,52 @@ function AuthProvider({ children }) {
     );
     setUser(response.data.user);
   };
+
+  const [userIsDoingSomething, setUserIsDoingSomething] = useState(false);
+
   const [election, setElection] = useState("chat");
   const [updatingRoom, setUpdatingRoom] = useState(false);
   const [cambio, setCambio] = useState("");
+  const [socketId, setSocketId] = useState("");
+  const userDoing = () => {
+    setUserIsDoingSomething(true);
+    setTimeout(setUserIsDoingSomething(false), 500);
+  };
 
-  const [user, setUser] = useState(async () => {
-    setUserIsLoading(true);
-    const token = localStorage.getItem("token");
-    console.log("a");
-    if (token) {
-      const tokenResponse = await verifyToken(token);
+  useEffect(() => {
+    const verifyTokenFunction = async () => {
+      const token = localStorage.getItem("token");
+      const response = await verifyToken(token);
+      if (response.message === "Token invalido") {
+        localStorage.removeItem("token");
+        setToken("");
+      } else {
+        setUser(response.user);
+      }
+    };
 
-      const response2 = await axios.get(
-        basePath + "users/" + tokenResponse.user.id
-      );
-      console.log(response2.data);
-      // await setUserData(response2.data);
-      setUserIsLoading(false);
-
-      return tokenResponse.user;
-    } else {
-      return null;
+    if (userIsDoingSomething) {
+      verifyTokenFunction();
     }
+  }, [userIsDoingSomething]);
+
+  const [user, setUser] = useState(() => {
+    const user = localStorage.getItem("user");
+    const initialValueUser = user ? JSON.parse(user) : "";
+    return initialValueUser;
   });
+
+  const { data: userData, isFetching: isLoadingUserData } = useQuery(
+    ["prueba", "getUser", user],
+    async () => await getUserById(user.id),
+    {}
+  );
+
   const [receivingMessage, setReceivingMessage] = useState(false);
   const [usersList, setUsersList] = useState([]);
   const [updatingUser, setUpdatingUser] = useState(false);
   const [receivingUserList, setReceivingUserList] = useState(false);
+  const [creatingRoom, setCreatingRoom] = useState(false);
 
   useEffect(() => {
     const tokenV = verifyToken(token);
@@ -80,20 +101,20 @@ function AuthProvider({ children }) {
     let socketId = "";
     socket.connect();
     socket.emit("conectado", id);
-    socket.on("socketid", (socketid) => {
-      socketId = socketid;
-      console.log(socketId);
-    });
 
-    setUser({
-      id: id,
-      userName: userName,
-      token: token,
-      rooms: rooms,
-      socketId: socketId,
-    });
+    const userObj = {
+      id,
+      userName,
+      token,
+      socketId,
+      rooms,
+      socketId,
+    };
+
+    setUser(userObj);
 
     localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(userObj));
     setUserIsLoading(false);
   }
 
@@ -120,8 +141,7 @@ function AuthProvider({ children }) {
   };
 
   const register = async (props) => {
-    const response = await axios.post("/api/users/register", props);
-    console.log(response.data);
+    const response = await axios.post(`${basePath}users/register`, props);
     const functionArgs = {
       message: response.data.message,
       id: response.data.id,
@@ -140,7 +160,6 @@ function AuthProvider({ children }) {
 
   const logout = () => {
     setUser(null);
-    console.log("oaa");
     socket.disconnect();
     socket.emit("desconectado");
     localStorage.removeItem("token");
@@ -154,33 +173,18 @@ function AuthProvider({ children }) {
 
   var userListAux = [];
   socket.on("usersList", (usersList) => {
-    userListAux = usersList;
-    setReceivingUserList(true);
-    // console.log("fallo");
-    setTimeout(() => {
-      setReceivingUserList(false);
-    }, 1000);
-    // console.log("ssdfsdf");
+    setUsersList(usersList);
   });
 
-  useEffect(() => {
-    if (receivingUserList) {
-      setUsersList(userListAux);
-    }
-  }, [receivingUserList]);
-
-  useEffect(() => {
-    if (receivingMessage) {
-      console.log("entro");
-    }
-  }, [receivingMessage]);
-
   socket.on("message", (message) => {
-    console.log("que rico el vicio");
     setReceivingMessage(true);
     setTimeout(() => {
       setReceivingMessage(false);
     }, 1);
+  });
+
+  socket.on("identifier", (socketid) => {
+    setSocketId(socketid);
   });
 
   useEffect(() => {
@@ -189,7 +193,6 @@ function AuthProvider({ children }) {
         const rooms = user.rooms;
 
         await rooms.map((room) => {
-          console.log(room);
           socket.emit("joinRoom", { room: room });
         });
       }
@@ -215,6 +218,14 @@ function AuthProvider({ children }) {
     userIsLoading,
     cambio,
     setCambio,
+    userData,
+    creatingRoom,
+    setCreatingRoom,
+    isLoadingUserData,
+    userDoing,
+    chatAux,
+    socketId,
+    setChatAux,
   };
 
   return (

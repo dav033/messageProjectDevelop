@@ -1,0 +1,53 @@
+.component {
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 1px gray;
+  border-top: solid 1px gray;
+  text-align: left;
+  flex-direction: row;
+  padding-right: 5px;
+  padding-left: 5px;
+
+  &:hover {
+    background-color: darken($color: #393e46, $amount: 5%);
+    cursor: pointer;
+  }
+
+  h1 {
+    font-size: 1.2rem;
+    color: white;
+
+    display: inline;
+  }
+
+  #usersInGroup {
+    font-size: 1.2rem;
+
+    color: white;
+    display: inline;
+  }
+
+  .flexItem {
+    width: 17.7% !important;
+    margin: auto !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-overflow: clip !important;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  #titulo {
+    width: 100% !important;
+    margin: auto !important;
+    display: flex;
+    text-overflow: clip !important;
+    overflow: hidden;
+    white-space: nowrap;
+    float: right;
+  }
+}

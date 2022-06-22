@@ -25,12 +25,13 @@ import {
 } from "../../../../petitions";
 import { useQuery, useQueryClient } from "react-query";
 import { useMutatePost } from "../../../../hooks/post";
+import ListComponent from "../../../listComponent/listComponent";
 
 export default function RoomsDashboard(props) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { user, updatingRoom } = useAuth();
+  const { user, updatingRoom, setCambio } = useAuth();
 
   const {
     data: rooms,
@@ -47,6 +48,7 @@ export default function RoomsDashboard(props) {
   };
 
   async function joinRoom(idRoom, usersRoom) {
+    console.log("aaa");
     let aux = false;
 
     const args = {
@@ -57,11 +59,13 @@ export default function RoomsDashboard(props) {
 
     const idUser = user.id;
     const response = await subscribeToRoom({ idRoom, idUser });
-
+    console.log(response.success);
     if (response.success) {
-      sockets.emit("joinRoom", args);
+      sockets.emit("joinRoom", { room: idRoom });
       navigate(`/room/${idRoom}`);
-      queryClient.invalidateQueries("getRooms", "getChatBoxes");
+      setCambio(idRoom);
+      queryClient.invalidateQueries("prueba");
+      queryClient.invalidateQueries("getRooms");
     } else {
       alert("No puedes entrar a esta sala");
     }
@@ -69,22 +73,29 @@ export default function RoomsDashboard(props) {
 
   function main() {
     if (rooms) {
-      return rooms.map((room) => (
-        <div
-          className="component"
-          onClick={(e) => joinRoom(room._id, room.users)}
-        >
-          <div className="" id="titulo">
-            <h1 style={{ textOverflow: "" }}>{room.name}</h1>
-          </div>
-          <div id="usersInGroup" className="flexItem">
-            <FontAwesomeIcon icon={faUser} />
-            &nbsp;
-            {room.users.length}
-          </div>
-          <div className="flexItem">{renderIconPerType(room.type)}</div>
-        </div>
-      ));
+      if (rooms.length != 0) {
+        const roomInformation = (room) => {
+          return (
+            <>
+              <div id="usersInGroup" className="flexItem">
+                <FontAwesomeIcon icon={faUser} />
+                &nbsp;
+                {room.users.length}
+              </div>
+              <div className="flexItem">{renderIconPerType(room.type)}</div>
+            </>
+          );
+        };
+        return rooms.map((room) => (
+          <ListComponent
+            onClickFunction={() => joinRoom(room._id, room.users)}
+            text={room.name}
+            optionalContent={roomInformation(room)}
+          />
+        ));
+      } else {
+        return <div>No hay salas</div>;
+      }
     } else {
       return <h1>no hay salas ñero</h1>;
     }

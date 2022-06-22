@@ -27,6 +27,10 @@
   display: block;
 }
 
+#sendButton:disabled{
+  cursor: inherit;
+
+}
 .usuario-seleccionado .cuerpo span:nth-child(2),
 .usuario .cuerpo span:nth-child(2) {
   font-size: 0.8em;
@@ -209,7 +213,6 @@
   text-align: center;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  
 }
 
 @media (max-width: 780px) {

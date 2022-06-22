@@ -85,18 +85,20 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
-    console.log("Owo");
-    if (election == "chat") {
-      document.getElementsByClassName("active")[0].classList.remove("active");
-      document.getElementById("chat").classList.add("active");
-    }
-    if (election == "users") {
-      document.getElementsByClassName("active")[0].classList.remove("active");
-      document.getElementById("users").classList.add("active");
-    }
-    if (election == "rooms") {
-      document.getElementsByClassName("active")[0].classList.remove("active");
-      document.getElementById("rooms").classList.add("active");
+    if (isLogged()) {
+      console.log("Owo");
+      if (election == "chat") {
+        document.getElementsByClassName("active")[0].classList.remove("active");
+        document.getElementById("chat").classList.add("active");
+      }
+      if (election == "users") {
+        document.getElementsByClassName("active")[0].classList.remove("active");
+        document.getElementById("users").classList.add("active");
+      }
+      if (election == "rooms") {
+        document.getElementsByClassName("active")[0].classList.remove("active");
+        document.getElementById("rooms").classList.add("active");
+      }
     }
   }, [election]);
 

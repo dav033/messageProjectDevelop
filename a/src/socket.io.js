@@ -16,7 +16,6 @@ module.exports = (io) => {
       usersList.push({ user_id: id, socket_id: socket.id });
       console.log("userList", usersList);
       io.emit("usersList", usersList);
-      io.emit("socketId", socket.id);
     });
 
     socket.on("disconnect", (...args) => {
@@ -32,10 +31,17 @@ module.exports = (io) => {
       console.log("usuario conectado a la sala", room);
     });
 
-    socket.on("sendMessage", (args) => {
+    socket.on("sendMessageToRoom", (args) => {
       const { type, content, transmitter, context, room } = args;
       console.log("mensaje recibido", args);
       socket.to(room).emit("message", { content, transmitter, context, room });
+    });
+
+    socket.on("sendMessageToPrivateChat", (args) => {
+      const { sender, message } = args;
+      const { receiver, content, transmitter, context, room } = message;
+      console.log("mensaje recibido", args);
+      socket.to(receiver).emit("message", { content, transmitter, context });
     });
   });
 

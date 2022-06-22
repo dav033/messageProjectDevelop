@@ -1,9 +1,9 @@
 import axios from "axios";
 import socket from "./socket";
 import { basePath } from "./helpers";
-
 //gets
 export const getUserById = async (id) => {
+  console.log(id);
   const response = await axios.get(`${basePath}users/${id}`);
   return response.data.user;
 };
@@ -39,10 +39,10 @@ export const getMessagesByRoomId = async (idRoom) => {
 };
 
 export const getLastMessagesAndRoomIdByRoomsIds = async (idsRooms) => {
-  console.log("actual", idsRooms);
   const response = await axios.post(`${basePath}messages/lastMessages`, {
     roomsIds: idsRooms,
   });
+  console.log(response.data);
   return response.data;
 };
 
@@ -54,20 +54,17 @@ export const getRoomsLessTheUserRooms = async (idUser) => {
 };
 
 export const sendMessage = async (message) => {
-  console.log(message);
   const response = await axios.post(`${basePath}messages/`, message);
   return response.data;
 };
 
 export const createRoom = async (room) => {
-  console.log(room);
   const response = await axios.post(`${basePath}rooms/`, room);
   return response.data;
 };
 
 export const getUser = async () => {
   const token = localStorage.getItem("token");
-  console.log(`Bearer ${token}`);
   const response = await axios.post(
     "${basePath}users/token",
     {},
@@ -90,7 +87,37 @@ export const subscribeToRoom = async (props) => {
   const response = await axios.post(`${basePath}users/${idUser}/subscribe`, {
     roomId: idRoom,
   });
-  console.log(response.data);
+  return response.data;
+};
+
+export const addMessage = async (props) => {
+  const { idRoom, message } = props;
+  const response = await axios.put(`${basePath}rooms/${idRoom}`, {
+    message: message,
+  });
+  return response.data;
+};
+
+export const getUsersLessOne = async (idUser) => {
+  const response = await axios.get(`${basePath}users/allUsers/${idUser}`);
+  return response.data;
+};
+
+export const getMessagesByChatId = async (idChat) => {
+  const response = await axios.get(`${basePath}messages/${idChat}`);
+  return response.data;
+};
+
+export const getPrivatesChatsByidGroup = async (idGroup) => {
+  const response = await axios.post(`${basePath}privateChat/groupId`, {
+    idGroup: idGroup,
+  });
+  return response.data;
+};
+
+export const getPrivateChat = async (idChat) => {
+  console.log(`${basePath}privateChat/` + idChat);
+  const response = await axios.get(`${basePath}privateChat/` + idChat);
   return response.data;
 };
 

@@ -1,5 +1,4 @@
 const { Schema, model } = require("mongoose");
-const user = require("./user");
 const User = require("./user");
 
 const privateChatSchema = new Schema({
@@ -8,7 +7,7 @@ const privateChatSchema = new Schema({
     ref: "User",
     required: true,
   },
-  user: {
+  user2: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -21,3 +20,5 @@ const privateChatSchema = new Schema({
     },
   ],
 });
+
+module.exports = model("privateChat", privateChatSchema);

@@ -18,7 +18,13 @@ const userSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "Room",
       },
-    ],  
+    ],
+    privateChats: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "PrivateChat",
+      },
+    ],
   },
   {
     timestamps: true,

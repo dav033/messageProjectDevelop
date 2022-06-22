@@ -2,9 +2,9 @@ import useAuth from "../../auth/useAuth";
 import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useMutatePost } from "../../hooks/post";
-import { createRoom } from "../../petitions";
+import { createRoom, subscribeToRoom } from "../../petitions";
 import socket from "../../socket";
-import { basePath } from "../../helpers";
+import { basePath, joinToSocketRoom } from "../../helpers";
 export default function Test() {
   const {
     login,
@@ -14,9 +14,12 @@ export default function Test() {
     setUser,
     setUpdatingRoom,
     userData,
+    setCreatingRoom,
+    usersList,
+    socketId,
   } = useAuth();
 
-  const QueryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   async function owo() {
     const token = localStorage.getItem("token");
@@ -35,26 +38,27 @@ export default function Test() {
   }
 
   async function prueba() {
-    const token = localStorage.getItem("token");
-    console.log(`Bearer ${token}`);
-    const response = await axios.post(
-      `${basePath}users/token`,
-      {},
+    const resonse = await axios.get(
+      "http://localhost:4000/api/privateChat/62b383ae60559cc6813bbe98",
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json; charset=utf-8",
+          Negotiation: "Accept",
+          "X-Powered-By": "express",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
+          Negotiate: "Accept",
+          //  Connection: "Keep-Alive",
         },
       }
     );
-
-    console.log(response.data.user);
-    setUser(response.data.user);
+    console.log(resonse.data);
   }
 
   function name() {
     console.log(user);
   }
-  const createRoomMutate = useMutatePost("getRooms", createRoom);
+  const createRoomMutate = useMutatePost("prueba", createRoom);
 
   const sendRoom = async (e) => {
     e.preventDefault();
@@ -70,9 +74,15 @@ export default function Test() {
     createRoomMutate.mutate(
       { roomData },
       {
-        onSuccess: () => {
+        onSuccess: (response) => {
           nombreRoom.value = "";
-          typeRoom.value = "";
+          typeRoom.value = "Publica";
+          console.log(response);
+          // subscribeToRoom({ idRoom: response, idUser: user.id });
+          //queryClient.invalidateQueries("getUser");
+          //queryClient.invalidateQueries("getChatBoxes");
+          queryClient.invalidateQueries("prueba");
+          joinToSocketRoom(response);
         },
       }
     );

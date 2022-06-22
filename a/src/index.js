@@ -32,7 +32,7 @@ app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    allowedHeaders: ["*"],
     credentials: true,
   })
 );
@@ -44,12 +44,13 @@ app.use(morgan("dev"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/rooms", require("./routes/rooms"));
 app.use("/api/messages", require("./routes/messages"));
+app.use("/api/privateChat", require("./routes/privateChat"));
 
 app.use(express.static(path.join(__dirname, "build")));
 
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
+// app.get("/*", function (req, res) {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 
 async function main() {
   await httpServer.listen(app.get("port"));

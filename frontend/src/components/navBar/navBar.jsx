@@ -25,7 +25,7 @@ export default function NavBar() {
               border: "none",
               fontSize: "21px",
               marginRight: "10px",
-              color:"white"
+              color: "white",
             }}
           >
             <FontAwesomeIcon icon={faBell} />

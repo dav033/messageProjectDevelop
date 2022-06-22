@@ -2,7 +2,7 @@ import io from "socket.io-client";
 
 const port = "http://localhost:4000";
 const porProduction = "https://messagesgroup.herokuapp.com";
-let socket = io(porProduction, {
+let socket = io(port, {
   autoConnect: false,
   reconnection: true,
   reconnectionAttempts: "Infinity",

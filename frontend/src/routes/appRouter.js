@@ -10,6 +10,7 @@ import LoggedRoutes from "./loggedRoutes.js";
 import MessageInterface from "../pages/messagesInterface/messageInterface.jsx";
 import Dashboard from "../components/dashBoard/dashboard.jsx";
 import PrintContent from "../pages/printContent/printContent.jsx";
+import ProvitionalChat from "../pages/provitionalChat/provitionalChat.jsx";
 import { Suspense, lazy } from "react";
 
 import {
@@ -20,6 +21,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Room from "../pages/room/room.jsx";
+import PrivateChat from "../pages/privateChat/privateChat.jsx";
 
 export default function AppRouter() {
   return (
@@ -67,6 +69,22 @@ export default function AppRouter() {
               element={
                 <RequireAuth>
                   <Room />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/privateChat"
+              element={
+                <RequireAuth>
+                  <ProvitionalChat />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/privateChat/:id"
+              element={
+                <RequireAuth>
+                  <PrivateChat />
                 </RequireAuth>
               }
             />

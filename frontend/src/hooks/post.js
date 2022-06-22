@@ -8,7 +8,7 @@ export function useMutatePost(key, petition) {
 
   return useMutation(petition, {
     onSuccess: (message) => {
-      queryClient.invalidateQueries(key);
+      //queryClient.invalidateQueries();
     },
   });
 }

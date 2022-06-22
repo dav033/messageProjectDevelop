@@ -13,25 +13,37 @@ const s3 = new AWS.S3({
 });
 
 usersCtrl.getUsers = async (req, res) => {
-  const users = await User.find();
-  res.json(users);
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
 };
 
 usersCtrl.createUser = async (req, res) => {
-  const { userName, password, email } = req.body;
-  const newUser = new User({
-    userName: userName,
-    email: email,
-    password: password,
-  });
-  await newUser.save(function (err, room) {
-    res.json(room.id);
-  });
+  try {
+    const { userName, password, email } = req.body;
+    const newUser = new User({
+      userName: userName,
+      email: email,
+      password: password,
+    });
+    await newUser.save(function (err, room) {
+      res.json(room.id);
+    });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
 };
 
 usersCtrl.getUser = async (req, res) => {
-  const user = await User.findById(req.params.id);
-  res.json({ user });
+  try {
+    const user = await User.findById(req.params.id);
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
 };
 
 usersCtrl.updateUser = async (req, res) => {
@@ -50,90 +62,98 @@ usersCtrl.updateUser = async (req, res) => {
 };
 
 usersCtrl.registerUser = async (req, res) => {
-  const { userName, password, confirmPassword, email } = req.body;
-  const users = await User.find();
-  const user = users.find((user) => user.userName === userName);
+  try {
+    const { userName, password, confirmPassword, email } = req.body;
+    const users = await User.find();
+    const user = users.find((user) => user.userName === userName);
 
-  if (password !== confirmPassword) {
-    return res.json({ message: "Las contraseñas no coinciden" });
-  } else if (user) {
-    return res.json({ message: "El usuario ya existe" });
-  } else if (
-    userName === "" ||
-    password === "" ||
-    email === "" ||
-    confirmPassword === ""
-  ) {
-    return res.json({ message: "Por favor llene todos los campos" });
-  } else {
-    const newUser = new User({
-      userName: userName,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    });
-
-    await newUser.save(function (err, room) {
-      const userForToken = {
-        id: room.id,
-        userName: room.userName,
-        email: room.email,
-      };
-      const token = jwt.sign(userForToken, process.env.SECRET_WORD, {
-        expiresIn: "5h",
+    if (password !== confirmPassword) {
+      return res.json({ message: "Las contraseñas no coinciden" });
+    } else if (user) {
+      return res.json({ message: "El usuario ya existe" });
+    } else if (
+      userName === "" ||
+      password === "" ||
+      email === "" ||
+      confirmPassword === ""
+    ) {
+      return res.json({ message: "Por favor llene todos los campos" });
+    } else {
+      const newUser = new User({
+        userName: userName,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
       });
 
-      return res.json({
-        message: "Usuario registrado",
-        id: room.id,
-        user: room.userName,
-        token: token,
+      await newUser.save(function (err, room) {
+        const userForToken = {
+          id: room.id,
+          userName: room.userName,
+          email: room.email,
+        };
+        const token = jwt.sign(userForToken, process.env.SECRET_WORD, {
+          expiresIn: "5h",
+        });
+
+        return res.json({
+          message: "Usuario registrado",
+          id: room.id,
+          user: room.userName,
+          token: token,
+        });
       });
-    });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
 usersCtrl.autenticateUser = async (req, res) => {
-  const { userName, password } = req.body;
-  const userDB = await User.findOne({ userName });
+  try {
+    const { userName, password } = req.body;
+    const userDB = await User.findOne({ userName });
 
-  if (!userDB) {
-    return res.json({
-      message: "Usuario no encontrado",
-    });
-  } else {
-    const passwordDB = userDB.password;
-    if (passwordDB === password) {
-      const userForToken = {
-        id: userDB.id,
-        userName: userDB.userName,
-        email: userDB.email,
-        rooms: userDB.rooms,
-      };
-
-      const token = jwt.sign(userForToken, process.env.SECRET_WORD, {
-        expiresIn: "5h",
-      });
-
+    if (!userDB) {
       return res.json({
-        message: "Usuario autenticado",
-        user: userDB.userName,
-        id: userDB._id,
-        token: token,
-        rooms: userDB.rooms,
+        message: "Usuario no encontrado",
       });
     } else {
-      return res.json({
-        message: "Contraseña incorrecta",
-      });
+      const passwordDB = userDB.password;
+      if (passwordDB === password) {
+        const userForToken = {
+          id: userDB.id,
+          userName: userDB.userName,
+          email: userDB.email,
+          rooms: userDB.rooms,
+        };
+
+        const token = jwt.sign(userForToken, process.env.SECRET_WORD, {
+          expiresIn: "5h",
+        });
+
+        return res.json({
+          message: "Usuario autenticado",
+          user: userDB.userName,
+          id: userDB._id,
+          token: token,
+          rooms: userDB.rooms,
+        });
+      } else {
+        return res.json({
+          message: "Contraseña incorrecta",
+        });
+      }
     }
+  } catch (error) {
+    console.log(error);
   }
 };
 
 usersCtrl.verifyToken = async (req, res) => {
-  const token = req.headers.authorization.split(" ")[1];
-
   try {
+    const token = req.headers.authorization.split(" ")[1];
+
     const userJwt = jwt.verify(token, process.env.SECRET_WORD);
 
     return res.json({
@@ -155,6 +175,7 @@ usersCtrl.verifyToken = async (req, res) => {
 
 usersCtrl.subscribeToRoom = async (req, res) => {
   const { roomId } = req.body;
+
   const userId = req.params.id;
   //console.log(userId, roomId);
   const user = await User.findById(userId);
@@ -186,6 +207,15 @@ usersCtrl.subscribeToRoom = async (req, res) => {
         success: false,
       });
     }
+  }
+};
+
+usersCtrl.getUsersLessOne = async (req, res) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.params.id } });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: error });
   }
 };
 

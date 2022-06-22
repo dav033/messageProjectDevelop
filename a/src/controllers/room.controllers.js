@@ -31,13 +31,16 @@ roomCtrl.createRoom = async (req, res) => {
     users: users,
     type: type,
   });
-  await newRoom.save(function (err, room) {
-    User.findByIdAndUpdate(creator, {
-      $push: { rooms: room._id },
-    });
-
-    res.json(room.id);
+  let aux = "";
+  await newRoom.save().then((room) => {
+    aux = room._id;
   });
+
+  await User.findByIdAndUpdate(creator, {
+    $push: { rooms: aux },
+  });
+
+  res.json(aux);
 };
 
 roomCtrl.updateRoom = async (req, res) => {
@@ -83,6 +86,7 @@ roomCtrl.addUser = async (req, res) => {
 roomCtrl.addMessage = async (req, res) => {
   try {
     const { message } = req.body;
+    console.log(message, req.params.id);
     await Room.findByIdAndUpdate(req.params.id, {
       $push: { messages: message },
     });

@@ -2,7 +2,7 @@ import "./printContent.scss";
 import useAuth from "../../auth/useAuth";
 
 export default function PrintContent({ children }) {
-  const { userLoading, userData } = useAuth();
+  const { userLoading, userData, isLogged } = useAuth();
 
   const main = () => {
     if (!userLoading) {
